@@ -21,6 +21,11 @@ namespace Kyse.AspNetCore.StaticLibrary
     /// </summary>
     public static class LibraryServerExtensions
     {
+        /// <summary>
+        /// Adds required static library services.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddLibraryServer(this IServiceCollection services)
         {
             if (services == null)
@@ -31,6 +36,12 @@ namespace Kyse.AspNetCore.StaticLibrary
             return services.AddLibraryBrowser();
         }
 
+        /// <summary>
+        /// Adds required static library services.
+        /// </summary>
+        /// <typeparam name="TPathProvider">The class implementing <see cref="ILibraryPathProvider"/> for providing library info exposed by the static library server.</typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddLibraryServer<TPathProvider>(this IServiceCollection services)
             where TPathProvider : class, ILibraryPathProvider
         {
@@ -100,9 +111,19 @@ namespace Kyse.AspNetCore.StaticLibrary
                 throw new ArgumentNullException(nameof(options));
             }
 
+            // TODO Test this.
+            //return app
+            //    .MapWhen(context => context.Request.PathBase.Equals(options.RequestPath), builder =>
+            //    {
+            //        builder
+            //            .UseLibraryFiles(options.LibraryFileOptions)
+            //            .UseLibraryBrowser(options.LibraryBrowserOptions);
+            //    });
+
             return app
                 .UseLibraryFiles(options.LibraryFileOptions)
                 .UseLibraryBrowser(options.LibraryBrowserOptions);
+
         }
     }
 }

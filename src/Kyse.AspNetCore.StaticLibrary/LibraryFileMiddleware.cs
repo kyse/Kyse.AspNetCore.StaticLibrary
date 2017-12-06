@@ -40,6 +40,7 @@ namespace Kyse.AspNetCore.StaticLibrary
         /// <param name="hostingEnv">The <see cref="IHostingEnvironment"/> used by this middleware.</param>
         /// <param name="options">The configuration options.</param>
         /// <param name="loggerFactory">An <see cref="ILoggerFactory"/> instance used to create loggers.</param>
+        /// <param name="pathProvider">The <see cref="ILibraryPathProvider"/> instanc used to provide libraries exposed by this server.</param>
         public LibraryFileMiddleware(RequestDelegate next, IHostingEnvironment hostingEnv, IOptions<LibraryFileOptions> options, ILoggerFactory loggerFactory, ILibraryPathProvider pathProvider)
         {
             if (hostingEnv == null)

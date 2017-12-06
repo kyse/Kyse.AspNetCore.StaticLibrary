@@ -16,7 +16,7 @@ using Microsoft.Extensions.FileProviders;
 namespace Kyse.AspNetCore.StaticLibrary
 {
     /// <summary>
-    /// Options common to several middleware components
+    /// Options common to several middleware components (LibraryBrowserMiddleware and LibraryFileMiddleware)
     /// </summary>
     public abstract class SharedOptionsBase
     {
@@ -35,12 +35,12 @@ namespace Kyse.AspNetCore.StaticLibrary
         }
 
         /// <summary>
-        /// Options common to several middleware components
+        /// Options common to several middleware components (LibraryBrowserMiddleware and LibraryFileMiddleware)
         /// </summary>
         protected SharedOptions SharedOptions { get; private set; }
 
         /// <summary>
-        /// The relative request path that maps to static resources.
+        /// The relative request path that maps to static resource libraries.
         /// </summary>
         public PathString RequestPath
         {
@@ -48,28 +48,22 @@ namespace Kyse.AspNetCore.StaticLibrary
             set { SharedOptions.RequestPath = value; }
         }
 
-        //public ILibraryPathProvider PathProvider {
-        //    get { return SharedOptions.PathProvider; }
-        //    set { SharedOptions.PathProvider = value; }
-        //}
-
+        /// <summary>
+        /// Whether unauthenticated requests are allowed or not.
+        /// </summary>
         public bool AllowAnonymous
         {
             get { return SharedOptions.AllowAnonymous; }
             set { SharedOptions.AllowAnonymous = value; }
         }
 
+        /// <summary>
+        /// Limit authenticated requests to specific Authentication Schemes.
+        /// </summary>
         public IEnumerable<string> AuthenticationSchemes
         {
             get { return SharedOptions.AuthenticationSchemes; }
             set { SharedOptions.AuthenticationSchemes = value; }
         }
-
-        //public IEnumerable<IAuthorizationRequirement> AuthorizationRequirements
-        //{
-        //    get { return SharedOptions.AuthorizationRequirements; }
-        //    set { SharedOptions.AuthorizationRequirements = value; }
-        //}
-
     }
 }

@@ -1,0 +1,520 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Kyse.AspNetCore.StaticLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.ILibrary">
+            <summary>
+            Interface for class providing library info
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.ILibrary.Name">
+            <summary>
+            The library name used for the sub path route.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.ILibrary.Path">
+            <summary>
+            The path local host path to expose with this library.
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.ILibraryPathProvider">
+            <summary>
+            The interface for the class providing the ILibrary list.
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.ILibraryPathProvider.GetLibraries">
+            <summary>
+            Returns the the list of libraries exposed by this static library server.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryBrowserExtensions">
+            <summary>
+            Extension methods for the DirectoryBrowserMiddleware
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserExtensions.UseLibraryBrowser(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Enable directory browsing on the current path
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserExtensions.UseLibraryBrowser(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String)">
+            <summary>
+            Enables directory browsing for the given request path
+            </summary>
+            <param name="app"></param>
+            <param name="requestPath">The relative request path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserExtensions.UseLibraryBrowser(Microsoft.AspNetCore.Builder.IApplicationBuilder,Kyse.AspNetCore.StaticLibrary.LibraryBrowserOptions)">
+            <summary>
+            Enable directory browsing with the given options
+            </summary>
+            <param name="app"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryBrowserFormtter">
+            <summary>
+            Generates an HTML view for a directory.
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserFormtter.#ctor(System.Text.Encodings.Web.HtmlEncoder)">
+            <summary>
+            Generates an HTML view for a directory.
+            </summary>
+            <param name="encoder">HtmlEncoder</param>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserFormtter.GenerateContentAsync(Microsoft.AspNetCore.Http.HttpContext,System.Collections.Generic.IEnumerable{Microsoft.Extensions.FileProviders.IFileInfo})">
+            <summary>
+            Generates an HTML view for a directory.
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryBrowserMiddleware">
+            <summary>
+            Enables library browsing
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.AspNetCore.Authorization.IAuthorizationService,Kyse.AspNetCore.StaticLibrary.ILibraryPathProvider,Microsoft.Extensions.Options.IOptions{Kyse.AspNetCore.StaticLibrary.LibraryBrowserOptions})">
+            <summary>
+            Creates a new instance of the LibraryBrowserMiddleware. Using <see cref="P:System.Text.Encodings.Web.HtmlEncoder.Default"/> instance.
+            </summary>
+            <param name="next">The next middleware in the pipeline.</param>
+            <param name="hostingEnv">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostingEnvironment"/> used by this middleware.</param>
+            <param name="authService">The authorization service used to authorize the request.</param>
+            <param name="pathProvider">The ILibraryPathProvider service used to determine paths to serve.</param>
+            <param name="options">The configuration for this middleware.</param>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.AspNetCore.Authorization.IAuthorizationService,Kyse.AspNetCore.StaticLibrary.ILibraryPathProvider,System.Text.Encodings.Web.HtmlEncoder,Microsoft.Extensions.Options.IOptions{Kyse.AspNetCore.StaticLibrary.LibraryBrowserOptions})">
+            <summary>
+            Creates a new instance of the SendFileMiddleware.
+            </summary>
+            <param name="next">The next middleware in the pipeline.</param>
+            <param name="hostingEnv">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostingEnvironment"/> used by this middleware.</param>
+            <param name="authService">The authorization service used to authorize the request.</param>
+            <param name="pathProvider">The ILibraryPathProvider service used to determine paths to serve.</param>
+            <param name="encoder">The <see cref="T:System.Text.Encodings.Web.HtmlEncoder"/> used by the default <see cref="T:Microsoft.AspNetCore.StaticFiles.HtmlDirectoryFormatter"/>.</param>
+            <param name="options">The configuration for this middleware.</param>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Examines the request to see if it matches a configured directory.  If so, a view of the directory contents is returned.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryBrowserOptions">
+            <summary>
+            Directory browsing options
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserOptions.#ctor">
+            <summary>
+            Enabled directory browsing for all request paths
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserOptions.#ctor(Kyse.AspNetCore.StaticLibrary.SharedOptions)">
+            <summary>
+            Enabled directory browsing all request paths
+            </summary>
+            <param name="sharedOptions"></param>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryBrowserOptions.Formatter">
+            <summary>
+            The component that generates the view.
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryBrowserServiceExtensions">
+            <summary>
+            Extension methods for adding directory browser services.
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryBrowserServiceExtensions.AddLibraryBrowser(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds directory browser middleware services.
+            </summary>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> to add services to.</param>
+            <returns>The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> so that additional calls can be chained.</returns>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryContentTypeProvider">
+            <summary>
+            Provides a mapping between file extensions and MIME types.
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryContentTypeProvider.#ctor">
+            <summary>
+            Creates a new provider with a set of default mappings.
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryContentTypeProvider.#ctor(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Creates a lookup engine using the provided mapping.
+            It is recommended that the IDictionary instance use StringComparer.OrdinalIgnoreCase.
+            </summary>
+            <param name="mapping"></param>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryContentTypeProvider.Mappings">
+            <summary>
+            The cross reference table of file extensions and content-types.
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryContentTypeProvider.TryGetContentType(System.String,System.String@)">
+            <summary>
+            Given a file path, determine the MIME type
+            </summary>
+            <param name="subpath">A file path</param>
+            <param name="contentType">The resulting MIME type</param>
+            <returns>True if MIME type could be determined</returns>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryFileExtensions">
+            <summary>
+            Extension methods for the StaticFileMiddleware
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryFileExtensions.UseLibraryFiles(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Enables static file serving for the current request path
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryFileExtensions.UseLibraryFiles(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String)">
+            <summary>
+            Enables static file serving for the given request path
+            </summary>
+            <param name="app"></param>
+            <param name="requestPath">The relative request path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryFileExtensions.UseLibraryFiles(Microsoft.AspNetCore.Builder.IApplicationBuilder,Kyse.AspNetCore.StaticLibrary.LibraryFileOptions)">
+            <summary>
+            Enables static file serving with the given options
+            </summary>
+            <param name="app"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryFileMiddleware">
+            <summary>
+            Enables serving static files for a given request path
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryFileMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.Extensions.Options.IOptions{Kyse.AspNetCore.StaticLibrary.LibraryFileOptions},Microsoft.Extensions.Logging.ILoggerFactory,Kyse.AspNetCore.StaticLibrary.ILibraryPathProvider)">
+            <summary>
+            Creates a new instance of the StaticFileMiddleware.
+            </summary>
+            <param name="next">The next middleware in the pipeline.</param>
+            <param name="hostingEnv">The <see cref="T:Microsoft.AspNetCore.Hosting.IHostingEnvironment"/> used by this middleware.</param>
+            <param name="options">The configuration options.</param>
+            <param name="loggerFactory">An <see cref="T:Microsoft.Extensions.Logging.ILoggerFactory"/> instance used to create loggers.</param>
+            <param name="pathProvider">The <see cref="T:Kyse.AspNetCore.StaticLibrary.ILibraryPathProvider"/> instanc used to provide libraries exposed by this server.</param>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryFileMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Processes a request to determine if it matches a known file, and if so, serves it.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryFileOptions">
+            <summary>
+            Options for serving static files
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryFileOptions.#ctor">
+            <summary>
+            Defaults to all request paths
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryFileOptions.#ctor(Kyse.AspNetCore.StaticLibrary.SharedOptions)">
+            <summary>
+            Defaults to all request paths
+            </summary>
+            <param name="sharedOptions"></param>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryFileOptions.ContentTypeProvider">
+            <summary>
+            Used to map files to content-types.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryFileOptions.DefaultContentType">
+            <summary>
+            The default content type for a request if the ContentTypeProvider cannot determine one.
+            None is provided by default, so the client must determine the format themselves.
+            http://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryFileOptions.ServeUnknownFileTypes">
+            <summary>
+            If the file is not a recognized content-type should it be served?
+            Default: false.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryFileOptions.OnPrepareResponse">
+            <summary>
+            Called after the status code and headers have been set, but before the body has been written.
+            This can be used to add or change the response headers.
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryFileResponseContext">
+            <summary>
+            Contains information about the request and the file that will be served in response.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryFileResponseContext.Context">
+            <summary>
+            The request and response information.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryFileResponseContext.File">
+            <summary>
+            The file to be served.
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryServerAuthorizationPolicy">
+            <summary>
+            Constant strings for the authorization policy names.
+            </summary>
+        </member>
+        <member name="F:Kyse.AspNetCore.StaticLibrary.LibraryServerAuthorizationPolicy.File">
+            <summary>
+            LibraryFileMiddleware Authorization Policy Name
+            </summary>
+        </member>
+        <member name="F:Kyse.AspNetCore.StaticLibrary.LibraryServerAuthorizationPolicy.Browser">
+            <summary>
+            LibraryBrowserMiddleware Authorization Policy Name
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryServerAuthorizationResource">
+            <summary>
+            StaticLibrary Resource class to wrap values for authorization reuqirement handlers.
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryServerAuthorizationResource.#ctor">
+            <summary>
+            StaticLibrary Resource class to wrap values for authorization reuqirement handlers.
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryServerAuthorizationResource.#ctor(Microsoft.AspNetCore.Http.HttpContext,Kyse.AspNetCore.StaticLibrary.ILibrary)">
+            <summary>
+            StaticLibrary Resource class to wrap values for authorization reuqirement handlers.
+            </summary>
+            <param name="httpContext">The request HttpContext</param>
+            <param name="library">The ILibrary that matches the request</param>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryServerAuthorizationResource.HttpContext">
+            <summary>
+            The request HttpContext
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryServerAuthorizationResource.Library">
+            <summary>
+            The ILibrary that matches the request
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryServerExtensions">
+            <summary>
+            Extension methods that combine all of the static file middleware components:
+            Default files, directory browsing, send file, and static files
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryServerExtensions.AddLibraryServer(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds required static library services.
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryServerExtensions.AddLibraryServer``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds required static library services.
+            </summary>
+            <typeparam name="TPathProvider">The class implementing <see cref="T:Kyse.AspNetCore.StaticLibrary.ILibraryPathProvider"/> for providing library info exposed by the static library server.</typeparam>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryServerExtensions.UseLibraryServer(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Enable all static file middleware (except directory browsing) for the current request path in the current directory.
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryServerExtensions.UseLibraryServer(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String)">
+            <summary>
+            Enables all static file middleware (except directory browsing) for the given request path from the directory of the same name
+            </summary>
+            <param name="app"></param>
+            <param name="requestPath">The relative request path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryServerExtensions.UseLibraryServer(Microsoft.AspNetCore.Builder.IApplicationBuilder,Kyse.AspNetCore.StaticLibrary.LibraryServerOptions)">
+            <summary>
+            Enable all static file middleware with the given options
+            </summary>
+            <param name="app"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryServerOptions">
+            <summary>
+            Options for all of the static file middleware components
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.LibraryServerOptions.#ctor">
+            <summary>
+            Creates a combined options class for all of the static file middleware components.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryServerOptions.LibraryFileOptions">
+            <summary>
+            Options for configuring the StaticFileMiddleware.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.LibraryServerOptions.LibraryBrowserOptions">
+            <summary>
+            Options for configuring the DirectoryBrowserMiddleware.
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.LoggerExtensions">
+            <summary>
+            Defines *all* the logger messages produced by static library files
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.RangeHelper">
+            <summary>
+            Provides a parser for the Range Header in an <see cref="P:Microsoft.AspNetCore.Http.HttpContext.Request"/>.
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.RangeHelper.ParseRange(Microsoft.AspNetCore.Http.HttpContext,Microsoft.AspNetCore.Http.Headers.RequestHeaders,System.Int64)">
+            <summary>
+            Returns the normalized form of the requested range if the Range Header in the <see cref="P:Microsoft.AspNetCore.Http.HttpContext.Request"/> is valid.
+            </summary>
+            <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> associated with the request.</param>
+            <param name="requestHeaders">The <see cref="T:Microsoft.AspNetCore.Http.Headers.RequestHeaders"/> associated with the given <paramref name="context"/>.</param>
+            <param name="length">The total length of the file representation requested.</param>
+            <returns>A boolean value which represents if the <paramref name="requestHeaders"/> contain a single valid 
+            range request. A <see cref="T:Microsoft.Net.Http.Headers.RangeItemHeaderValue"/> which represents the normalized form of the 
+            range parsed from the <paramref name="requestHeaders"/> or <c>null</c> if it cannot be normalized.</returns>
+            <remark>If the Range header exists but cannot be parsed correctly, or if the provided length is 0, then the range request cannot be satisfied (status 416). 
+            This results in (<c>true</c>,<c>null</c>) return values.</remark>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.Resources.Args_NoFormatter">
+            <summary>
+              Looks up a localized string similar to No formatter provided..
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.Resources.HtmlDir_IndexOf">
+            <summary>
+              Looks up a localized string similar to Index of.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.Resources.HtmlDir_LastModified">
+            <summary>
+              Looks up a localized string similar to Last Modified.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.Resources.HtmlDir_Modified">
+            <summary>
+              Looks up a localized string similar to Modified.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.Resources.HtmlDir_Name">
+            <summary>
+              Looks up a localized string similar to Name.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.Resources.HtmlDir_Size">
+            <summary>
+              Looks up a localized string similar to Size.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.Resources.HtmlDir_TableSummary">
+            <summary>
+              Looks up a localized string similar to The list of files in the given directory.  Column headers are listed in the first row..
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.SharedOptions">
+            <summary>
+            Options common to several middleware components (LibraryBrowserMiddleware and LibraryFileMiddleware)
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.SharedOptions.#ctor">
+            <summary>
+            Defaults to all request paths.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.SharedOptions.RequestPath">
+            <summary>
+            The request path that maps to static resource libraries.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.SharedOptions.PathProvider">
+            <summary>
+            The path provider class providing the ILibrary list.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.SharedOptions.AllowAnonymous">
+            <summary>
+            Whether unauthenticated requests are allowed or not.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.SharedOptions.AuthenticationSchemes">
+            <summary>
+            Limit authenticated requests to specific Authentication Schemes.
+            </summary>
+        </member>
+        <member name="T:Kyse.AspNetCore.StaticLibrary.SharedOptionsBase">
+            <summary>
+            Options common to several middleware components (LibraryBrowserMiddleware and LibraryFileMiddleware)
+            </summary>
+        </member>
+        <member name="M:Kyse.AspNetCore.StaticLibrary.SharedOptionsBase.#ctor(Kyse.AspNetCore.StaticLibrary.SharedOptions)">
+            <summary>
+            Creates an new instance of the SharedOptionsBase.
+            </summary>
+            <param name="sharedOptions"></param>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.SharedOptionsBase.SharedOptions">
+            <summary>
+            Options common to several middleware components (LibraryBrowserMiddleware and LibraryFileMiddleware)
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.SharedOptionsBase.RequestPath">
+            <summary>
+            The relative request path that maps to static resource libraries.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.SharedOptionsBase.AllowAnonymous">
+            <summary>
+            Whether unauthenticated requests are allowed or not.
+            </summary>
+        </member>
+        <member name="P:Kyse.AspNetCore.StaticLibrary.SharedOptionsBase.AuthenticationSchemes">
+            <summary>
+            Limit authenticated requests to specific Authentication Schemes.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -27,8 +27,12 @@ namespace Kyse.AspNetCore.StaticLibrary
     {
         private const string TextHtmlUtf8 = "text/html; charset=utf-8";
 
-        private HtmlEncoder _htmlEncoder;
+        private readonly HtmlEncoder _htmlEncoder;
 
+        /// <summary>
+        /// Generates an HTML view for a directory.
+        /// </summary>
+        /// <param name="encoder">HtmlEncoder</param>
         public LibraryBrowserFormtter(HtmlEncoder encoder)
         {
             if (encoder == null)

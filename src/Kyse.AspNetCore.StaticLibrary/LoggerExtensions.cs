@@ -14,7 +14,7 @@ using Microsoft.Extensions.Primitives;
 namespace Kyse.AspNetCore.StaticLibrary
 {
     /// <summary>
-    /// Defines *all* the logger messages produced by static files
+    /// Defines *all* the logger messages produced by static library files
     /// </summary>
     internal static class LoggerExtensions
     {

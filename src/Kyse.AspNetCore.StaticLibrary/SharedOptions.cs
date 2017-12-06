@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 namespace Kyse.AspNetCore.StaticLibrary
 {
     /// <summary>
-    /// Options common to several middleware components
+    /// Options common to several middleware components (LibraryBrowserMiddleware and LibraryFileMiddleware)
     /// </summary>
     public class SharedOptions
     {
@@ -31,7 +31,7 @@ namespace Kyse.AspNetCore.StaticLibrary
         }
 
         /// <summary>
-        /// The request path that maps to static resources
+        /// The request path that maps to static resource libraries.
         /// </summary>
         public PathString RequestPath
         {
@@ -46,13 +46,19 @@ namespace Kyse.AspNetCore.StaticLibrary
             }
         }
 
+        /// <summary>
+        /// The path provider class providing the ILibrary list.
+        /// </summary>
         public ILibraryPathProvider PathProvider { get; set; }
 
+        /// <summary>
+        /// Whether unauthenticated requests are allowed or not.
+        /// </summary>
         public bool AllowAnonymous { get; set; }
 
+        /// <summary>
+        /// Limit authenticated requests to specific Authentication Schemes.
+        /// </summary>
         public IEnumerable<string> AuthenticationSchemes { get; set; } = new List<string>();
-
-        //public IEnumerable<IAuthorizationRequirement> AuthorizationRequirements { get; set; }
-
     }
 }
