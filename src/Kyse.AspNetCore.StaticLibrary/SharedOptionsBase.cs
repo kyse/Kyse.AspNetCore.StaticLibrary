@@ -65,11 +65,11 @@ namespace Kyse.AspNetCore.StaticLibrary
             set { SharedOptions.AuthenticationSchemes = value; }
         }
 
-        public IEnumerable<IAuthorizationRequirement> AuthorizationRequirements
-        {
-            get { return SharedOptions.AuthorizationRequirements; }
-            set { SharedOptions.AuthorizationRequirements = value; }
-        }
+        //public IEnumerable<IAuthorizationRequirement> AuthorizationRequirements
+        //{
+        //    get { return SharedOptions.AuthorizationRequirements; }
+        //    set { SharedOptions.AuthorizationRequirements = value; }
+        //}
 
     }
 }

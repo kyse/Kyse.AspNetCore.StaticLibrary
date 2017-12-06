@@ -119,7 +119,7 @@ namespace Kyse.AspNetCore.StaticLibrary
             {
                 user = "Anonymous";
             }
-            _logFileServed(logger, virtualPath, physicalPath, user, null);
+            _logFileServed(logger, user, virtualPath, physicalPath, null);
         }
 
         public static void LogPathMismatch(this ILogger logger, string path)
@@ -189,7 +189,7 @@ namespace Kyse.AspNetCore.StaticLibrary
             {
                 ip = "N/A";
             }
-            _logNotAuthenticated(logger, library, path, ip, null);
+            _logNotAuthenticated(logger, ip, library, path, null);
         }
 
         public static void LogNotAuthorized(this ILogger logger, string library, string path, string user)
@@ -198,7 +198,7 @@ namespace Kyse.AspNetCore.StaticLibrary
             {
                 user = "Anonymous";
             }
-            _logNotAuthorized(logger, library, path, user, null);
+            _logNotAuthorized(logger, user, library, path, null);
         }
 
         public static void LogTransportMethod(this ILogger logger, string method)

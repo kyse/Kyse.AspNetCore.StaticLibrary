@@ -101,7 +101,7 @@ namespace Kyse.AspNetCore.StaticLibrary
                 return Constants.CompletedTask;
             }
 
-            if (!context.IsAuthorized(library, _options))
+            if (!context.IsAuthorized(_options, library, LibraryServerAuthorizationPolicy.Browser))
             {
                 context.Response.StatusCode = 403;
                 return Constants.CompletedTask;

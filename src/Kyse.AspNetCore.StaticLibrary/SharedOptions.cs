@@ -27,7 +27,7 @@ namespace Kyse.AspNetCore.StaticLibrary
         public SharedOptions()
         {
             RequestPath = PathString.Empty;
-            AuthorizationRequirements = new List<IAuthorizationRequirement>();
+            //AuthorizationRequirements = new List<IAuthorizationRequirement>();
         }
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace Kyse.AspNetCore.StaticLibrary
 
         public bool AllowAnonymous { get; set; }
 
-        public IEnumerable<string> AuthenticationSchemes { get; set; }
+        public IEnumerable<string> AuthenticationSchemes { get; set; } = new List<string>();
 
-        public IEnumerable<IAuthorizationRequirement> AuthorizationRequirements { get; set; }
+        //public IEnumerable<IAuthorizationRequirement> AuthorizationRequirements { get; set; }
 
     }
 }

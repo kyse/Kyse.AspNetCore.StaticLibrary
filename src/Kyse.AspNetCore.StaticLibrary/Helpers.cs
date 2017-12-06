@@ -79,15 +79,21 @@ namespace Kyse.AspNetCore.StaticLibrary
             return false;
         }
 
-        internal static bool IsAuthenticated(this HttpContext context, SharedOptionsBase options)
+        internal static bool IsAuthenticated(this HttpContext context, SharedOptionsBase options) =>
+            IsAuthenticatedAsync(context, options).Result;
+
+        internal static async Task<bool> IsAuthenticatedAsync(this HttpContext context, SharedOptionsBase options)
         {
             if (options.AllowAnonymous)
                 return true;
-            
-            var authSchemes = context.RequestServices.GetService<IAuthenticationSchemeProvider>().GetAllSchemesAsync().Result.Select(scheme => scheme.Name).ToArray();
+
+            var authSchemes = options.AuthenticationSchemes.Any()
+                                  ? options.AuthenticationSchemes
+                                  : context.RequestServices.GetService<IAuthenticationSchemeProvider>()
+                                           .GetAllSchemesAsync().Result.Select(scheme => scheme.Name).ToArray();
             foreach (var authScheme in authSchemes)
             {
-                var cp = context.AuthenticateAsync(authScheme).Result;
+                var cp = await context.AuthenticateAsync(authScheme);
                 if (cp == null || !cp.Succeeded) continue;
                 context.User = cp.Principal;
                 break;
@@ -95,20 +101,16 @@ namespace Kyse.AspNetCore.StaticLibrary
             return (context.User != null && context.User.Identity.IsAuthenticated);
         }
 
-        internal static bool IsAuthorized(this HttpContext context, ILibrary library, SharedOptionsBase options)
-        {
-            return options.AllowAnonymous ||
-                   !options.AuthorizationRequirements.Any() ||
-                   context.RequestServices.GetService<IAuthorizationService>().AuthorizeAsync(context.User, library, options.AuthorizationRequirements).Result.Succeeded;
-        }
+        internal static bool IsAuthorized(this HttpContext context, SharedOptionsBase options, ILibrary library, string policy) =>
+            IsAuthorizedAsync(context, options, library, policy).Result;
 
-        internal static async Task<bool> IsAuthorizedAsync(this HttpContext context, ILibrary library,
-                                                     SharedOptionsBase options)
+        internal static async Task<bool> IsAuthorizedAsync(this HttpContext context, SharedOptionsBase options, ILibrary library, string policy)
         {
+            var authService = context.RequestServices.GetService<IAuthorizationService>();
+            var policyProvider = context.RequestServices.GetService<IAuthorizationPolicyProvider>();
             return options.AllowAnonymous ||
-                   !options.AuthorizationRequirements.Any() ||
-                   (await context.RequestServices.GetService<IAuthorizationService>()
-                                 .AuthorizeAsync(context.User, library, options.AuthorizationRequirements)).Succeeded;
+                   await policyProvider.GetPolicyAsync(policy) == null ||
+                   (await authService.AuthorizeAsync(context.User, new LibraryServerAuthorizationResource(context, library), policy)).Succeeded;
         }
     }
 }

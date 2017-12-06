@@ -92,7 +92,7 @@ namespace Kyse.AspNetCore.StaticLibrary
                     _logger.LogNotAuthenticated(fileContext.Library.Name, fileContext.SubPath, context.Connection?.RemoteIpAddress?.ToString());
                     return fileContext.SendStatusAsync(Constants.Status401NotAuthenticated);
                 }
-                if (!context.IsAuthorized(fileContext.Library, _options))
+                if (!context.IsAuthorized(_options, fileContext.Library, LibraryServerAuthorizationPolicy.File))
                 {
                     _logger.LogNotAuthorized(fileContext.Library.Name, fileContext.SubPath, context.User?.Identity?.Name);
                     return fileContext.SendStatusAsync(Constants.Status403NotAuthorized);
@@ -117,11 +117,9 @@ namespace Kyse.AspNetCore.StaticLibrary
                     case LibraryFileContext.PreconditionState.NotModified:
                         _logger.LogPathNotModified(fileContext.SubPath);
                         return fileContext.SendStatusAsync(Constants.Status304NotModified);
-
                     case LibraryFileContext.PreconditionState.PreconditionFailed:
                         _logger.LogPreconditionFailed(fileContext.SubPath);
                         return fileContext.SendStatusAsync(Constants.Status412PreconditionFailed);
-
                     default:
                         var exception = new NotImplementedException(fileContext.GetPreconditionState().ToString());
                         Debug.Fail(exception.ToString());

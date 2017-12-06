@@ -104,11 +104,5 @@ namespace Kyse.AspNetCore.StaticLibrary
                 .UseLibraryFiles(options.LibraryFileOptions)
                 .UseLibraryBrowser(options.LibraryBrowserOptions);
         }
-
-        public static IApplicationBuilder UseLibraryPathProvider<Ti, Tt>(this IApplicationBuilder app)
-        {
-            app.ServerFeatures[typeof(Ti)] = typeof(Tt);
-            return app;
-        }
     }
 }
