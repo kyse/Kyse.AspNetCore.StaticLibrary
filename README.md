@@ -58,7 +58,7 @@ and dynamic endpoint to filesystem path mappings.
     ```
 
 ## Authorization
-To support abstraction from authorization, I've simplifie the check to simply call against two policies.  Use the two properties from the `LibraryServerAuthorizationPolilcy` class when registering your policies in your authorization config.
+To support abstraction from authorization, I've simplified the check to simply call against two policies.  Use the two string properties from the `LibraryServerAuthorizationPolilcy` class when registering your policies in your authorization config.
 > You can make your policies as simple (via the policy builder config) or as complex as you like.  Provided below is an example of a more complex setup to narrow down authorization against the resource (library) being requested.
 
 1. Create the authorization requirements.
@@ -122,12 +122,12 @@ Most of the options are inherited from `Microsoft.AspNetCore.StaticFiles` so ref
 However, there are a few more added options avaialable to control authentication and authorization access.
 
 - AllowAnonymous - Set to true to allow anonymous access to the libraries expoesd by this middleware.
-- AuthenticationSchemes - Specify an Authrneication Scheme to use for checking authentication of the request
+- AuthenticationSchemes - Specify an Authentication Scheme to use for authenticating the request.
   > If not specified, all defined authentication schemes will be checked until one authenticates with a ClaimsPrincipal.
 
 ## Todo & Thoughts
 - Switch Invoke to async to allow authorizeasync calls since authorize requirements could be hitting a database backend.
 - Might be worth adding MapWhen to UseStaticLibrary extension against the root library path to prevent unneeded calls to our middleware code.
-- Move interfaces to an abstractions package to remove nuget package dependencies being pulled into solution setups where a data poco implementing ILibrary doesn't need to pull in the larger staticlibrary package dependencies.
+- Move interfaces to an abstractions package to remove nuget package dependencies being pulled into solution setups where a data poco implementing ILibrary is in a data project and doesn't need to pull in the larger staticlibrary package dependencies.
 - Review dependencies to see if we can reduce them (can we import abstraction packages instead of full core packages?).
 - Expand support to provide a service for exposing files via a temp path or via a temp auth token (media streaming?).  Might be too in depth for the purposee of this library though, as such a concept could just wrap and interface with this library via the path provider since each request will check with the path provider if a library path is valid.  However, in the current state, temp paths are limited to exposing all files in the directory, thus you'd hav to combine authorization for now to limit file access if so desired.
