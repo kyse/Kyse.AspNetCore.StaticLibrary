@@ -4,32 +4,6 @@
         <name>Kyse.AspNetCore.StaticLibrary</name>
     </assembly>
     <members>
-        <member name="T:Kyse.AspNetCore.StaticLibrary.ILibrary">
-            <summary>
-            Interface for class providing library info
-            </summary>
-        </member>
-        <member name="P:Kyse.AspNetCore.StaticLibrary.ILibrary.Name">
-            <summary>
-            The library name used for the sub path route.
-            </summary>
-        </member>
-        <member name="P:Kyse.AspNetCore.StaticLibrary.ILibrary.Path">
-            <summary>
-            The path local host path to expose with this library.
-            </summary>
-        </member>
-        <member name="T:Kyse.AspNetCore.StaticLibrary.ILibraryPathProvider">
-            <summary>
-            The interface for the class providing the ILibrary list.
-            </summary>
-        </member>
-        <member name="M:Kyse.AspNetCore.StaticLibrary.ILibraryPathProvider.GetLibraries">
-            <summary>
-            Returns the the list of libraries exposed by this static library server.
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:Kyse.AspNetCore.StaticLibrary.LibraryBrowserExtensions">
             <summary>
             Extension methods for the DirectoryBrowserMiddleware

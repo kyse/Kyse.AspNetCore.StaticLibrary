@@ -3,6 +3,7 @@
 // - Updated to support class name changes.
 // - Added authentication and authorization.
 // - Added dynamic library path mapping.
+// - Converted Invoke to async
 //
 // Original Copywrite/License Notice:
 //
@@ -10,7 +11,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -87,24 +87,28 @@ namespace Kyse.AspNetCore.StaticLibrary
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             // Check if the URL matches any expected paths
             if (!Helpers.IsGetOrHeadMethod(context.Request.Method) ||
                 !Helpers.TryMatchPath(context, _prefixUrl, forDirectory: true, subpath: out PathString libraryPath) ||
-                !Helpers.TryMatchLibrary(libraryPath, _pathProvider.GetLibraries(), forDirectory: true, subpath: out PathString subpath, library: out ILibrary library))
-                return _next(context);
+                !Helpers.TryMatchLibrary(libraryPath, _pathProvider.GetLibraries(), forDirectory: true,
+                                         subpath: out PathString subpath, library: out ILibrary library))
+            {
+                await _next(context);
+                return;
+            }
 
             if (!context.IsAuthenticated(_options))
             {
                 context.Response.StatusCode = 401;
-                return Constants.CompletedTask;
+                return;
             }
 
             if (!context.IsAuthorized(_options, library, LibraryServerAuthorizationPolicy.Browser))
             {
                 context.Response.StatusCode = 403;
-                return Constants.CompletedTask;
+                return;
             }
 
             // If the path matches a directory but does not end in a slash, redirect to add the slash.
@@ -114,14 +118,16 @@ namespace Kyse.AspNetCore.StaticLibrary
                 context.Response.StatusCode = 301;
                 context.Response.Headers[HeaderNames.Location] =
                     context.Request.PathBase + context.Request.Path + "/" + context.Request.QueryString;
-                return Constants.CompletedTask;
+                return;
             }
 
             if (TryGetDirectoryInfo(library, subpath, out IDirectoryContents contents))
-                return _formatter.GenerateContentAsync(context, contents);
+            {
+                await _formatter.GenerateContentAsync(context, contents);
+                return;
+            }
 
             context.Response.StatusCode = 500;
-            return Constants.CompletedTask;
         }
 
         private bool TryGetDirectoryInfo(ILibrary library, PathString subpath, out IDirectoryContents contents)

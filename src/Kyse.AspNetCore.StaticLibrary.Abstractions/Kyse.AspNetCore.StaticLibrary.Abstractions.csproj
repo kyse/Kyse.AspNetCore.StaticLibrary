@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>$(CommonVersion)</Version>
+    <Authors>Jared Fisher</Authors>
+    <Description>Abstractions for Kyse.AspNetCore.StaticLibrary</Description>
+    <PackageId>Kyse.AspNetCore.StaticLibrary.Abstractions</PackageId>
+    <PackageTags>staticlibrary abstractions</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <Copyright>© $(CopyrightYear) Jared Fisher</Copyright>
+    <RepositoryUrl>https://github.com/kyse/Kyse.AspNetCore.StaticLibrary.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/kyse/Kyse.AspNetCore.StaticLibrary</PackageProjectUrl>
+    <RepositoryType>github</RepositoryType>
+    <Product>Kyse.AspNetCore.StaticLibrary</Product>
+    <RootNamespace>Kyse.AspNetCore.StaticLibrary</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>Kyse.AspNetCore.StaticLibrary.Abstractions.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Kyse.AspNetCore.StaticLibrary.Abstractions.xml" />
+  </ItemGroup>
+
+  
+  
+</Project>

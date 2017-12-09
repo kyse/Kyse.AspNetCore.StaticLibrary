@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <CommonVersion>1.0.1</CommonVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CopyrightInitialYear>2017</CopyrightInitialYear>
+    <CopyrightYear Condition="$([System.DateTime]::Now.ToString(`yyyy`)) == $(CopyrightInitialYear)">$([System.DateTime]::Now.ToString(`yyyy`))</CopyrightYear>
+    <CopyrightYear Condition="$(CopyrightYear) == ''">$(CopyrightInitialYear)-$([System.DateTime]::Now.ToString(`yyyy`))</CopyrightYear>
+  </PropertyGroup>
+</Project>
