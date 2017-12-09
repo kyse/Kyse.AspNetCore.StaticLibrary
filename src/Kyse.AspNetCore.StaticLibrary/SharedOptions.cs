@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
 namespace Kyse.AspNetCore.StaticLibrary

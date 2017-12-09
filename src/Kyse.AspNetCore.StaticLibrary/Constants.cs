@@ -5,7 +5,6 @@
 // Changes:
 // - Including internal classes required for modified files.
 
-using System;
 using System.Threading.Tasks;
 
 namespace Kyse.AspNetCore.StaticLibrary

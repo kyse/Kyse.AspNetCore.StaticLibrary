@@ -1,6 +1,7 @@
 ﻿// Modified by: Jared Fisher (kyse@kyse.us)
 // Changes:
 // - Updated to support class name changes.
+// - Changed some log levels to reduce debug spam.
 //
 // Original Copywrite/License Notice:
 //

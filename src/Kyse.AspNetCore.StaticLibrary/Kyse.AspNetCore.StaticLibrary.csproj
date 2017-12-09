@@ -1,20 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <CopyrightInitialYear>2017</CopyrightInitialYear>
-    <CopyrightYear Condition="$([System.DateTime]::Now.ToString(`yyyy`)) == $(CopyrightInitialYear)">$([System.DateTime]::Now.ToString(`yyyy`))</CopyrightYear>
-    <CopyrightYear Condition="$(CopyrightYear) == ''">$(CopyrightInitialYear)-$([System.DateTime]::Now.ToString(`yyyy`))</CopyrightYear>
-  </PropertyGroup>
+  <Import Project="..\common.props" Condition="Exists('..\common.props')" />
   
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <Version>1.0.0</Version>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>$(CommonVersion)</Version>
     <Authors>Jared Fisher</Authors>
     <Description>Dynamic Library to filesystem mapping with Authorization implementation of Microsoft.AspNetCore.StaticFiles.</Description>
     <PackageId>Kyse.AspNetCore.StaticLibrary</PackageId>
     <PackageTags>staticlibrary staticfiles staticbrowser static files browser auhentication authorization</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>AspNetCore 2.0 version.</PackageReleaseNotes>
+    <PackageReleaseNotes>Reference &amp; Depenency Optimizations
+Converted to a .NET Standard 2.0 class library.
+Moved ILibrary &amp; ILibraryPathProvider to an abstractions packcage to reduce dependency imports when used in seperate target data projects.Moved ILibrary and ILibraryPathProvider to an abstractions package.
+Updated middleware invoke methods to run async since authorize requirement handlers could involve calls to a DB backend.</PackageReleaseNotes>
     <Copyright>© $(CopyrightYear) Jared Fisher</Copyright>
     <RepositoryUrl>https://github.com/kyse/Kyse.AspNetCore.StaticLibrary.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/kyse/Kyse.AspNetCore.StaticLibrary</PackageProjectUrl>
@@ -22,7 +21,6 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <LangVersion>latest</LangVersion>
     <DocumentationFile>Kyse.AspNetCore.StaticLibrary.xml</DocumentationFile>
   </PropertyGroup>
 
@@ -33,10 +31,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization.Policy" Version="2.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="2.0.0" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kyse.AspNetCore.StaticLibrary.Abstractions\Kyse.AspNetCore.StaticLibrary.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

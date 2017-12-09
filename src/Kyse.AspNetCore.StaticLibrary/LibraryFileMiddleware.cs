@@ -1,6 +1,7 @@
 ﻿// Modified by: Jared Fisher (kyse@kyse.us)
 // Changes:
 // - Updated to support class name changes.
+// - Converted Invoke to async
 //
 // Original Copywrite/License Notice:
 //
@@ -10,14 +11,11 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Runtime.InteropServices;
 
 namespace Kyse.AspNetCore.StaticLibrary
 {
@@ -66,7 +64,7 @@ namespace Kyse.AspNetCore.StaticLibrary
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             var fileContext = new LibraryFileContext(context, _options, _prefixUrl, _logger, _contentTypeProvider, _pathProvider);
 
@@ -91,12 +89,14 @@ namespace Kyse.AspNetCore.StaticLibrary
                 if (!context.IsAuthenticated(_options))
                 {
                     _logger.LogNotAuthenticated(fileContext.Library.Name, fileContext.SubPath, context.Connection?.RemoteIpAddress?.ToString());
-                    return fileContext.SendStatusAsync(Constants.Status401NotAuthenticated);
+                    await fileContext.SendStatusAsync(Constants.Status401NotAuthenticated);
+                    return;
                 }
                 if (!context.IsAuthorized(_options, fileContext.Library, LibraryServerAuthorizationPolicy.File))
                 {
                     _logger.LogNotAuthorized(fileContext.Library.Name, fileContext.SubPath, context.User?.Identity?.Name);
-                    return fileContext.SendStatusAsync(Constants.Status403NotAuthorized);
+                    await fileContext.SendStatusAsync(Constants.Status403NotAuthorized);
+                    return;
                 }
 
                 // If we get here, we can try to serve the file
@@ -107,20 +107,25 @@ namespace Kyse.AspNetCore.StaticLibrary
                     case LibraryFileContext.PreconditionState.ShouldProcess:
                         if (fileContext.IsHeadMethod)
                         {
-                            return fileContext.SendStatusAsync(Constants.Status200Ok);
+                            await fileContext.SendStatusAsync(Constants.Status200Ok);
+                            return;
                         }
                         if (fileContext.IsRangeRequest)
                         {
-                            return fileContext.SendRangeAsync();
+                            await fileContext.SendRangeAsync();
+                            return;
                         }
                         _logger.LogFileServed(fileContext.SubPath, fileContext.PhysicalPath, context.User?.Identity?.Name);
-                        return fileContext.SendAsync();
+                        await fileContext.SendAsync();
+                        return;
                     case LibraryFileContext.PreconditionState.NotModified:
                         _logger.LogPathNotModified(fileContext.SubPath);
-                        return fileContext.SendStatusAsync(Constants.Status304NotModified);
+                        await fileContext.SendStatusAsync(Constants.Status304NotModified);
+                        return;
                     case LibraryFileContext.PreconditionState.PreconditionFailed:
                         _logger.LogPreconditionFailed(fileContext.SubPath);
-                        return fileContext.SendStatusAsync(Constants.Status412PreconditionFailed);
+                        await fileContext.SendStatusAsync(Constants.Status412PreconditionFailed);
+                        return;
                     default:
                         var exception = new NotImplementedException(fileContext.GetPreconditionState().ToString());
                         Debug.Fail(exception.ToString());
@@ -128,7 +133,7 @@ namespace Kyse.AspNetCore.StaticLibrary
                 }
             }
 
-            return _next(context);
+            await _next(context);
         }
     }
 }
